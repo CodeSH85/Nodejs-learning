@@ -1,5 +1,5 @@
 // module 模組
-//hello.js
+// hello.js
 const path = require('path');
 
 const sayHello = () => {
@@ -31,7 +31,10 @@ module.exports = {
   title
 };
 
+// 顯示載入的模組
 console.log('module', module);
+
+// 顯示檔案的路徑(需引入 path 內建模組)
 console.log('dirname', __dirname);
 console.log('filename',__dirname );
 console.log(path.join(__dirname, 'index.js'));
