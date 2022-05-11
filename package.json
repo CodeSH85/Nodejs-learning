@@ -1,5 +1,9 @@
 {
-  "dependencies": {
-    "cowsay": "^1.5.0"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.16"
   }
 }
