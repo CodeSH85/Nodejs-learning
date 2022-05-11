@@ -1,0 +1,2 @@
+# gitignore : 選擇要被git忽略的檔案，如第三方套件等..
+node_modules
