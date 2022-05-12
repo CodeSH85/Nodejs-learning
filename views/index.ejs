@@ -10,5 +10,13 @@
 <body>
   <img src="/images/logo.png" alt="apple" style="width:50px;">
   <h1><%= pageTitle %></h1>
+  <% if (products.length > 0){ %>
+    <% products.forEach( product => { %>
+      <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
+      <h2><%= product.title %></h2>
+    <% }) %>
+  <% } else { %>
+    尚無商品
+  <% } %>
 </body>
 </html>
