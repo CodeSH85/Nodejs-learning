@@ -57,6 +57,7 @@ const express = require('express');
 
 // *.使用Express套件
 
+// 使用express
 const app = express();
 
 app.use((req, res, next) => {
@@ -69,6 +70,10 @@ app.use((req, res, next) => {
   console.log('Express!');
   next();
 });
+
+// express.static : 載入靜態資源(css,img..)
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 //處理 get 請求 (在 url 輸入"/"就是一種get請求)
 app.get('/', (req, res) =>{
