@@ -10,6 +10,7 @@ const path = require('path');
 // 第二個區塊 第三方模組(套件)
 
 const express = require('express');
+const bodyParser = require('body-parser');
 //const cowsay = require('cowsay');
 
 // 第三個區塊 自建模組
@@ -60,20 +61,21 @@ const express = require('express');
 // 使用express
 const app = express();
 
+// express 使用req, res, next
 app.use((req, res, next) => {
-  console.log('Hello');
+  //console.log('Hello');
   //若不加上 next() 則伺服器將一直停留在目前階段
   next();
 });
 
-app.use((req, res, next) => {
-  console.log('Express!');
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log('Express!');
+//   next();
+// });
 
 // express.static : 載入靜態資源(css,img..)
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //處理 get 請求 (在 url 輸入"/"就是一種get請求)
 app.get('/', (req, res) =>{
@@ -96,6 +98,17 @@ app.get('/login', (req, res) => {
   // res.write('</body>')
   res.status(200)
   .sendFile(path.join(__dirname, 'views', 'login.html'));
+});
+
+app.post('/login',(req, res) => {
+
+  const { email, password } = req.body;
+  if (email && password) {
+      res.redirect('/');
+      console.log('Form-data',req.body);
+  } else {
+      console.log('欄位尚未填寫完成！')
+  }
 });
 
 app.listen(3001, () => {
