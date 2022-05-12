@@ -111,6 +111,13 @@ app.post('/login',(req, res) => {
   }
 });
 
+// 萬用路由要寫在所有的 get 處理之後，如果將它放置到之前，
+// 那麼這個網站永遠不會看到 404 錯誤以外的頁面
+app.get('*', (req, res) => {
+  res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
+});
+
 app.listen(3001, () => {
   console.log('running server on port 3001');
 });
+
