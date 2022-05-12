@@ -4,7 +4,7 @@
 // 第一個區塊 內建模組
 
 // 內建模組不需使用檔案路徑，可直接引用
-// const path = require('path');
+const path = require('path');
 // const http = require('http');
 
 // 第二個區塊 第三方模組(套件)
@@ -24,6 +24,8 @@ const express = require('express');
 //console.log(hello.title);
 
 //==================================================
+
+// *.原生 Node js 作法
 
 //const server = http.createServer((req, res) => {
 	// console.log('第一個參數是瀏覽器對 web server 的 request', req);
@@ -53,34 +55,42 @@ const express = require('express');
 
 // console.log(url.parse('https://www.twitch.tv/riotgames'));
 
-// 使用express ========================================
+// *.使用Express套件
 
 const app = express();
 
 app.use((req, res, next) => {
-  console.log('this');
+  console.log('Hello');
+  //若不加上 next() 則伺服器將一直停留在目前階段
   next();
 });
 
 app.use((req, res, next) => {
-  console.log('this');
+  console.log('Express!');
   next();
 });
 
+//處理 get 請求 (在 url 輸入"/"就是一種get請求)
 app.get('/', (req, res) =>{
-  res.writeHead(200,{'Content-Type':'text/html'});
-  res.write('<head><meta charset="utf-8" /><head>');
-  res.write('<body>');
-  res.write('<h1>這是首頁</h1>');
-  res.write('</body>');
+  // res.writeHead(200,{'Content-Type':'text/html'});
+  // res.write('<head><meta charset="utf-8" /><head>');
+  // res.write('<body>');
+  // res.write('<h1>這是首頁</h1>');
+  // res.write('</body>');
+  // response 回應 http status 200
+  res.status(200)
+  // 回傳一個html檔案
+  .sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
 app.get('/login', (req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.write('<head><meta charset="utf-8" /></head>')
-  res.write('<body>')
-  res.write('<h1>這是 Login 頁</h1>')
-  res.write('</body>')
+  // res.writeHead(200, { 'Content-Type': 'text/html' });
+  // res.write('<head><meta charset="utf-8" /></head>')
+  // res.write('<body>')
+  // res.write('<h1>這是 Login 頁</h1>')
+  // res.write('</body>')
+  res.status(200)
+  .sendFile(path.join(__dirname, 'views', 'login.html'));
 });
 
 app.listen(3001, () => {
