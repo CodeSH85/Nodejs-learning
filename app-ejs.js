@@ -44,6 +44,7 @@ app.get('/', (req, res) =>{
   // .sendFile(path.join(__dirname, 'views', 'index.html'));
   // 在 EJX 中帶入參數
   .render('index',{
+    path: '/',
     pageTitle: 'Book Your Books online',
     products,
   });
@@ -53,6 +54,7 @@ app.get('/login', (req, res) => {
   res.status(200)
   //.sendFile(path.join(__dirname, 'views', 'login.html'));
   .render('login',{
+    path: '/login',
     pageTitle: 'Login Page' 
   });
 });
@@ -68,6 +70,14 @@ app.post('/login',(req, res) => {
   }
 });
 
+
+app.post('/logout',(req, res) => {
+
+      res.redirect('/login');
+      console.log('Form-data',req.body);
+
+});
+
 // 萬用路由要寫在所有的 get 處理之後，如果將它放置到之前，
 // 那麼這個網站永遠不會看到 404 錯誤以外的頁面
 app.get('*', (req, res) => {
@@ -81,6 +91,8 @@ app.get('*', (req, res) => {
 app.listen(3001, () => {
   console.log('running server on port 3001');
 });
+
+
 
 const products = [
   {

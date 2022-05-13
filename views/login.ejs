@@ -2,7 +2,7 @@
 </head>
 
 <body>
-  <h1><%= pageTitle %></h1>
+  <%- include('./includes/navbar') %>
   <form action="/login" method="POST">
     <div>
       <label for="email">Email</label>
@@ -14,7 +14,4 @@
     </div>
     <button type="submit">Login</button>
   </form>
-</body>
-</body>
-
-</html>
+<%- include('./includes/footer') %>
