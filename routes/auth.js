@@ -1,33 +1,22 @@
 const express = require ('express');
 
+const authController = require ('../controllers/auth');
+
 // =====================================
 
 const router = express.Router();
 
-router.get('/login', (req, res) => {
-  res.status(200)
-  .render('login',{
-    path: '/login',
-    pageTitle: 'Login Page' 
-  });
-});
+router.get('/login', authController.getLogin);
 
-router.post('/login',(req, res) => {
-  // const { email, password } = req.body;
-  // if (email && password) {
-  //   res.redirect('/');
-  //   console.log('Form-data',req.body);
-  // } else {
-  //   console.log('欄位尚未填寫完成！')
-  // }
-  res.redirect('/');
-});
+router.get('/login', authController.postLogin);
+
+router.get('/login', authController.postLogout);
 
 
 router.post('/logout',(req, res) => {
 
   res.redirect('/login');
-  console.log('Form-data',req.body);
+  // console.log('Form-data',req.body);
 
 });
 
