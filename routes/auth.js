@@ -14,10 +14,7 @@ router.get('/login', authController.postLogout);
 
 
 router.post('/logout',(req, res) => {
-
   res.redirect('/login');
-  // console.log('Form-data',req.body);
-
 });
 
 module.exports = router;

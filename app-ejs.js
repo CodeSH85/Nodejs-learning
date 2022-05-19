@@ -8,6 +8,7 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const database = require('./utils/database');
 
 // 第三個區塊 自建模組
 const authRoutes = require('./routes/auth');
@@ -33,6 +34,18 @@ app.use(authRoutes);
 app.use(shopRoutes);
 app.use(errorRoutes);
 
-app.listen(3001, () => {
-  console.log('running server on port 3001');
-});
+// app.listen(3001, () => {
+//   console.log('running server on port 3001');
+// });
+
+// 使用Sequelize連結 DB
+database
+	.sync()
+	.then((result) => {
+		app.listen(3001, () => {
+			console.log('Web Server is running on port 3001');
+		});
+	})
+	.catch((err) => {
+		console.log('create web server error: ', err);
+	});
