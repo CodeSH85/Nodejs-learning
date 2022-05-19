@@ -14,6 +14,7 @@ const bodyParser = require('body-parser');
 
 // 第三個區塊 自建模組
 //const hello = require('./hello');
+const authRoutes = require('./routes/auth')
 
 //===============================================
 
@@ -37,7 +38,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 app.set('views', 'views'); // 預設路徑就是 views，如果沒有變動，可以省略此設定
 
-//處理 get 請求 (在 url 輸入"/"就是一種get請求)
+// 處理 get 請求 (在 url 輸入"/"就是一種get請求)
 app.get('/', (req, res) =>{
   // response 回應 http status 200
   res.status(200)
@@ -50,33 +51,36 @@ app.get('/', (req, res) =>{
   });
 });
 
-app.get('/login', (req, res) => {
-  res.status(200)
-  //.sendFile(path.join(__dirname, 'views', 'login.html'));
-  .render('login',{
-    path: '/login',
-    pageTitle: 'Login Page' 
-  });
-});
+// app.get('/login', (req, res) => {
+//   res.status(200)
+//   //.sendFile(path.join(__dirname, 'views', 'login.html'));
+//   .render('login',{
+//     path: '/login',
+//     pageTitle: 'Login Page' 
+//   });
+// });
 
-app.post('/login',(req, res) => {
+// app.post('/login',(req, res) => {
+//   const { email, password } = req.body;
+//   if (email && password) {
+//       res.redirect('/');
+//       console.log('Form-data',req.body);
+//   } else {
+//       console.log('欄位尚未填寫完成！')
+//   }
+// });
 
-  const { email, password } = req.body;
-  if (email && password) {
-      res.redirect('/');
-      console.log('Form-data',req.body);
-  } else {
-      console.log('欄位尚未填寫完成！')
-  }
-});
 
+// app.post('/logout',(req, res) => {
 
-app.post('/logout',(req, res) => {
+//       res.redirect('/login');
+//       console.log('Form-data',req.body);
 
-      res.redirect('/login');
-      console.log('Form-data',req.body);
+// });
 
-});
+// 使用路由資料夾
+app.use(authRoutes);
+
 
 // 萬用路由要寫在所有的 get 處理之後，如果將它放置到之前，
 // 那麼這個網站永遠不會看到 404 錯誤以外的頁面
@@ -91,8 +95,6 @@ app.get('*', (req, res) => {
 app.listen(3001, () => {
   console.log('running server on port 3001');
 });
-
-
 
 const products = [
   {
