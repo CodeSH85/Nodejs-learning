@@ -10,6 +10,7 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const connectFlash = require('connect-flash');
+const bcryptjs = require('bcryptjs');
 
 // 第三個區塊 自建模組
 const database = require('./utils/database');
@@ -74,12 +75,10 @@ database
     force: true
   }) // 每次寫入資料前都先清空資料庫(避免重複輸入)
   .then((result) => {
-    User.create({
-      displayName: 'Admin',
-      email: 'admin@skoob.com',
-      password: '11111111'
-    });
-    Product.bulkCreate(products);
+    // User.create({
+    //   displayName: 'Admin', email: 'admin@skoob.com', password: '11111111'
+    // });
+    // Product.bulkCreate(products);
     app.listen(port, () => {
       console.log('Web Server is running on port ${port}');
     });
