@@ -20,25 +20,6 @@ const getSignup = (req, res) => {
     });
 }
 
-const postSignup = (req, res) => {
-  const { displayName,email,password } = req.body;
-  User.findOne({ where: {email}})
-    .then((user) => {
-      if (user) {
-        req.flash('errorMessage', '此帳號已存在！請使用其他 Email。')
-        return res.redirect('/signup');
-      } else {
-        // TODO: 實作註冊功能
-      }
-    })
-    .then((result) => {
-      res.redirect('/login');
-    })
-    .catch((err) => {
-      console.log('signup_error', err);
-    });
-}
-
 const postLogin = (req, res) => {
   const {
     email,
@@ -67,16 +48,47 @@ const postLogin = (req, res) => {
     });
 };
 
+const postSignup = (req, res) => {
+  const {
+    displayName,
+    email,
+    password
+  } = req.body;
+  User.findOne({
+      where: {
+        email
+      }
+    })
+    .then((user) => {
+      if (user) {
+        req.flash('errorMessage', '此帳號已存在！請使用其他 Email。')
+        return res.redirect('/signup');
+      } else {
+        return User.create({
+          displayName,
+          email,
+          password
+        });
+      }
+    })
+    .then((result) => {
+      res.redirect('/login');
+    })
+    .catch((err) => {
+      console.log('signup_error', err);
+    });
+}
+
 const postLogout = (req, res) => {
   req.session.destroy((err) => {
-    res.redirect('/login');
+    res.redirect('/login')
   });
 }
 
 module.exports = {
-  getSignup,
   getLogin,
-  postSignup,
+  getSignup,
   postLogin,
   postLogout,
+  postSignup
 };

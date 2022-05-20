@@ -29,6 +29,10 @@ const app = express();
 const port = 3001;
 const oneDay = 1000 * 60 * 60 * 24;
 
+//使用ejs
+app.set('view engine', 'ejs');
+app.set('views', 'views'); // 預設路徑就是 views，如果沒有變動，可以省略此設定
+
 // express.static : 載入靜態資源(css,img..)
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -46,20 +50,13 @@ app.use(connectFlash());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
-
 // locals : express提供的全域變數
 app.use((req, res, next) => {
+  res.locals.pageTitle = 'Book Your Books online';
   res.locals.path = req.url;
   res.locals.isLogin = req.session.isLogin || false; // 在local中儲存isLogin變數供所有視圖使用
   next(); // 繼續前往下一個仲介軟體
 });
-
-//使用ejs
-app.set('view engine', 'ejs');
-app.set('views', 'views'); // 預設路徑就是 views，如果沒有變動，可以省略此設定
 
 // 使用路由資料夾
 app.use(authRoutes);
