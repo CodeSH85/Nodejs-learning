@@ -26,6 +26,9 @@ const User = require('./models/user');
 // 使用express套件
 const app = express();
 
+const port = 3001;
+const oneDay = 1000 * 60 * 60 * 24;
+
 // express.static : 載入靜態資源(css,img..)
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -35,7 +38,7 @@ app.use(session({
 	resave: false,   // 沒變更內容是否強制回存
 	saveUninitialized: false ,  // 新 session 未變更內容是否儲存
 	cookie: {
-		maxAge: 10000 // session 狀態儲存多久？單位為毫秒
+		maxAge: oneDay // session 狀態儲存多久？單位為毫秒
 	}
 })); 
 // 使用connect-Flash
@@ -80,8 +83,8 @@ database
       password: '11111111'
     });
     Product.bulkCreate(products);
-    app.listen(3001, () => {
-      console.log('Web Server is running on port 3001');
+    app.listen(port, () => {
+      console.log('Web Server is running on port ${port}');
     });
   })
   .catch((err) => {
