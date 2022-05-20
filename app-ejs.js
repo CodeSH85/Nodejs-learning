@@ -9,6 +9,7 @@ const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const connectFlash = require('connect-flash');
 
 // 第三個區塊 自建模組
 const database = require('./utils/database');
@@ -22,13 +23,13 @@ const User = require('./models/user');
 //===============================================
 
 
-// 使用express
+// 使用express套件
 const app = express();
 
 // express.static : 載入靜態資源(css,img..)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// express-session
+// express-session 設定
 app.use(session({ 
 	secret: 'sessionToken',  // 加密用的字串
 	resave: false,   // 沒變更內容是否強制回存
@@ -37,6 +38,10 @@ app.use(session({
 		maxAge: 10000 // session 狀態儲存多久？單位為毫秒
 	}
 })); 
+// 使用connect-Flash
+app.use(connectFlash());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 
 app.use(bodyParser.urlencoded({
   extended: false
@@ -44,8 +49,9 @@ app.use(bodyParser.urlencoded({
 
 // locals : express提供的全域變數
 app.use((req, res, next) => {
-  res.locals.isLogin = req.session.isLogin || false;
-  next();
+  res.locals.path = req.url;
+  res.locals.isLogin = req.session.isLogin || false; // 在local中儲存isLogin變數供所有視圖使用
+  next(); // 繼續前往下一個仲介軟體
 });
 
 //使用ejs
