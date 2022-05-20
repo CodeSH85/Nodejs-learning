@@ -1,21 +1,23 @@
 // require(url): 自路徑載入模組，可將模組路徑給予變數方便使用
 // 第一個區塊 內建模組
 
-// 內建模組不需使用檔案路徑，可直接引用
+// 第一個區塊 內建模組
 const path = require('path');
 
-// 第二個區塊 第三方模組(套件)
 
+// 第二個區塊 第三方模組(套件)
 const express = require('express');
+const session = require('express-session');
 const bodyParser = require('body-parser');
 
 // 第三個區塊 自建模組
 const database = require('./utils/database');
-const authRoutes = require('./routes/auth');
-const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth'); 
+const shopRoutes = require('./routes/shop'); 
 const errorRoutes = require('./routes/404');
 const Product = require('./models/product');
 const User = require('./models/user');
+
 
 //===============================================
 
@@ -25,9 +27,26 @@ const app = express();
 
 // express.static : 載入靜態資源(css,img..)
 app.use(express.static(path.join(__dirname, 'public')));
+
+// express-session
+app.use(session({ 
+	secret: 'sessionToken',  // 加密用的字串
+	resave: false,   // 沒變更內容是否強制回存
+	saveUninitialized: false ,  // 新 session 未變更內容是否儲存
+	cookie: {
+		maxAge: 10000 // session 狀態儲存多久？單位為毫秒
+	}
+})); 
+
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+
+// locals : express提供的全域變數
+app.use((req, res, next) => {
+  res.locals.isLogin = req.session.isLogin || false;
+  next();
+});
 
 //使用ejs
 app.set('view engine', 'ejs');
