@@ -2,6 +2,13 @@ const User = require('../models/user');
 
 ////////////////////////////////////////////////////////////////
 
+const getSignup = (req, res) => {
+  res.status(200)
+      .render('auth/signup', {
+          pageTitle: 'Signup',
+      });
+};
+
 const getLogin = (req, res) => {
   const errorMessage = req.flash('errorMessage')[0];
   res.status(200)
@@ -40,6 +47,7 @@ const postLogout = (req, res) => {
 }
 
 module.exports = {
+  getSignup,
   getLogin,
   postLogin,
   postLogout,
