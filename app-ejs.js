@@ -70,17 +70,15 @@ app.use(errorRoutes);
 
 // 使用Sequelize連結 DB
 database
-  //.sync()
-  .sync({
-    force: true
-  }) // 每次寫入資料前都先清空資料庫(避免重複輸入)
+  .sync()
+  // .sync({force: true}) // 每次寫入資料前都先清空資料庫(避免重複輸入)
   .then((result) => {
     // User.create({
     //   displayName: 'Admin', email: 'admin@skoob.com', password: '11111111'
     // });
     // Product.bulkCreate(products);
     app.listen(port, () => {
-      console.log('Web Server is running on port ${port}');
+      console.log(`Web Server is running on port ${port}`);
     });
   })
   .catch((err) => {
