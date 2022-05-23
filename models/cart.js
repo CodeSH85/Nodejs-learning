@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const database = require('../utils/database');
 
-////////////////////////////////////////////////////////////
+//===========================================================
 
 const Cart = database.define('cart', {
   id: {

@@ -4,6 +4,9 @@ const express = require('express');
 
 const authController = require('../controllers/auth');
 
+// 路由守衛
+const isLogin = require('../authGuard/is-login');
+
 ////////////////////////////////////////////////////////////
 
 const router = express.Router();

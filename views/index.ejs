@@ -1,5 +1,4 @@
 <%- include('./includes/header') %>
-<link rel="stylesheet" href="/style/main.css">
 </head>
 
 <body>
@@ -16,6 +15,7 @@
             <h5 class="card-title"><%= product.title %></h5>
             <p class="card-text"><%= product.description %></p>
             <a href="#" class="btn btn-primary">詳細資訊</a>
+            <!-- 路由守衛 -->
             <% if(isLogin) { %>                            
               <form action="/cart-add-item" method="POST">
                 <input type="hidden" name="productId" value="<%= product.id %>">
