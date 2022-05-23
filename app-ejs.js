@@ -19,6 +19,8 @@ const authRoutes = require('./routes/auth');
 const shopRoutes = require('./routes/shop'); 
 const errorRoutes = require('./routes/404');
 const Product = require('./models/product');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 const User = require('./models/user');
 
 
@@ -66,6 +68,12 @@ app.use((req, res, next) => {
 app.use(authRoutes);
 app.use(shopRoutes);
 app.use(errorRoutes);
+
+// 定義 cart 模型關聯
+User.hasOne(Cart);
+Cart.belongsTo(User);
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
 
 // app.listen(3001, () => {
 //   console.log('running server on port 3001');
