@@ -6,6 +6,7 @@
   <%- include('../includes/navbar.ejs') %>
   <div class="container-md pt-3">
     <div class="row justify-content-center">
+      <!-- TODO: 開發完成時，刪除預設參數 -->
 
       <div class="col-8 text-center">
         <h1>Signup</h1>
@@ -23,7 +24,7 @@
           <div>
             <label for="displayName" class="form-label">Display Name</label>
             <input type="text" class="form-control" id="displayName" placeholder="Display Name" name="displayName"
-              maxlength="20" required>
+              maxlength="20" value="Admin" required>
             <div class="invalid-feedback">
               顯示名稱最長不得超過 20 字元。
             </div>
@@ -31,7 +32,8 @@
 
           <div>
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="example@com" name="email" required>
+            <input type="email" class="form-control" id="email" placeholder="example@com" name="email" 
+              value="admin@skoob.com" required>
             <div class="invalid-feedback">
               請輸入合法的電子郵件地址。
             </div>
@@ -40,12 +42,12 @@
           <div>
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" placeholder="password" name="password"
-              minlength="8" maxlength="12" required>
+              minlength="8" maxlength="12" value="11111111" required>
             <div class="invalid-feedback">
               請輸入 8 ~ 12 位數的密碼。
             </div>
           </div>
-
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <button class="btn btn-primary" type="submit">Signup</button>
 
         </form>

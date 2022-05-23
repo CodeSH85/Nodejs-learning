@@ -10,6 +10,7 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const connectFlash = require('connect-flash');
+const csrfProtection = require('csurf');
 const bcryptjs = require('bcryptjs');
 
 // 第三個區塊 自建模組
@@ -49,6 +50,7 @@ app.use(session({
 // 使用connect-Flash
 app.use(connectFlash());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(csrfProtection());
 
 
 // locals : express提供的全域變數
@@ -56,6 +58,7 @@ app.use((req, res, next) => {
   res.locals.pageTitle = 'Book Your Books online';
   res.locals.path = req.url;
   res.locals.isLogin = req.session.isLogin || false; // 在local中儲存isLogin變數供所有視圖使用
+  res.locals.csrfToken = req.csrfToken();
   next(); // 繼續前往下一個仲介軟體
 });
 
@@ -76,7 +79,7 @@ database
     // User.create({
     //   displayName: 'Admin', email: 'admin@skoob.com', password: '11111111'
     // });
-    // Product.bulkCreate(products);
+    //Product.bulkCreate(products);
     app.listen(port, () => {
       console.log(`Web Server is running on port ${port}`);
     });

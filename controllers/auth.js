@@ -7,19 +7,13 @@ const bcryptjs = require('bcryptjs');
 const getLogin = (req, res) => {
   const errorMessage = req.flash('errorMessage')[0];
   res.status(200)
-    .render('auth/login', {
-      pageTitle: 'Login',
-      errorMessage
-    });
+    .render('auth/login', { pageTitle: 'Login', errorMessage });
 };
 
 const getSignup = (req, res) => {
   const errorMessage = req.flash('errorMessage')[0];
   res.status(200)
-    .render('auth/signup', {
-      pageTitle: 'Signup',
-      errorMessage
-    });
+    .render('auth/signup', { pageTitle: 'Signup', errorMessage });
 }
 
 const postLogin = (req, res) => {
@@ -60,16 +54,8 @@ const postLogin = (req, res) => {
 };
 
 const postSignup = (req, res) => {
-  const {
-    displayName,
-    email,
-    password
-  } = req.body;
-  User.findOne({
-      where: {
-        email
-      }
-    })
+  const { displayName, email, password } = req.body;
+  User.findOne({where: {email}})
     .then((user) => {
       if (user) {
         req.flash('errorMessage', '此帳號已存在！請使用其他 Email。')
