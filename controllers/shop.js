@@ -87,8 +87,42 @@ const postCartAddItem = (req, res) => {
     })
 };
 
+const postCartDeleteItem = (req, res, next) => {
+  const { productId } = req.body;
+  let userCart;
+  req.user
+    .getCart()
+    .then((cart) => {
+      userCart = cart;
+      return cart.getProducts({ where: { id: productId }});
+    })
+    .then((products) => {
+      const product = products[0];
+      // cartItem 購物車中的產品項目，定義資料庫關係時透過cartItem連結
+      return product.cartItem.destroy(); 
+    })
+    .then(() => {
+      return userCart
+        .getProducts()
+        .then((products) => {
+          if (products.length) {
+            // 重新計算總額
+            const productSums = products.map((product) => product.price * product.cartItem.quantity);
+            const amount = productSums.reduce((accumulator, currentValue) => accumulator + currentValue);
+            userCart.amount = amount;
+            return userCart.save();
+          }
+        });
+    })
+    .then(() => {
+      res.redirect('/cart');
+    })
+    .catch((err) => console.log(err));
+};
+
 module.exports = {
   getIndex,
   getCart,
   postCartAddItem,
+  postCartDeleteItem
 }
