@@ -52,9 +52,8 @@ app.use(session({
 
 // 使用connect-Flash
 app.use(connectFlash());
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+// 使用bodyParser(重要) 套件可以解析form傳入的參數來供後續使用
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(csrfProtection());
 
 // 取得 User Model (如果已登入的話)
@@ -84,15 +83,11 @@ app.use((req, res, next) => {
 });
 
 
-// 定義 cart 模型關聯
+// 定義 cart 模型的關聯式陣列
 User.hasOne(Cart);
 Cart.belongsTo(User);
-Cart.belongsToMany(Product, {
-  through: CartItem
-});
-Product.belongsToMany(Cart, {
-  through: CartItem
-});
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
 
 // 使用路由資料夾
 app.use(authRoutes);
