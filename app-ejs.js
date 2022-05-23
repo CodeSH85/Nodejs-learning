@@ -15,8 +15,8 @@ const bcryptjs = require('bcryptjs');
 
 // 第三個區塊 自建模組
 const database = require('./utils/database');
-const authRoutes = require('./routes/auth'); 
-const shopRoutes = require('./routes/shop'); 
+const authRoutes = require('./routes/auth');
+const shopRoutes = require('./routes/shop');
 const errorRoutes = require('./routes/404');
 const Product = require('./models/product');
 const Cart = require('./models/cart');
@@ -41,18 +41,37 @@ app.set('views', 'views'); // 預設路徑就是 views，如果沒有變動，�
 app.use(express.static(path.join(__dirname, 'public')));
 
 // express-session 設定
-app.use(session({ 
-	secret: 'sessionToken',  // 加密用的字串
-	resave: false,   // 沒變更內容是否強制回存
-	saveUninitialized: false ,  // 新 session 未變更內容是否儲存
-	cookie: {
-		maxAge: oneDay // session 狀態儲存多久？單位為毫秒
-	}
-})); 
+app.use(session({
+  secret: 'sessionToken', // 加密用的字串
+  resave: false, // 沒變更內容是否強制回存
+  saveUninitialized: false, // 新 session 未變更內容是否儲存
+  cookie: {
+    maxAge: oneDay // session 狀態儲存多久？單位為毫秒
+  }
+}));
+
 // 使用connect-Flash
 app.use(connectFlash());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(csrfProtection());
+
+// 取得 User Model (如果已登入的話)
+app.use((req, res, next) => {
+  if (!req.session.user) {
+    return next();
+  }
+  User.findByPk(req.session.user.id)
+    .then((user) => {
+      req.user = user;
+      next();
+    })
+    .catch((err) => {
+      console.log('find user by session id error: ', err);
+    })
+});
+
 
 
 // locals : express提供的全域變數
@@ -64,16 +83,21 @@ app.use((req, res, next) => {
   next(); // 繼續前往下一個仲介軟體
 });
 
-// 使用路由資料夾
-app.use(authRoutes);
-app.use(shopRoutes);
-app.use(errorRoutes);
 
 // 定義 cart 模型關聯
 User.hasOne(Cart);
 Cart.belongsTo(User);
-Cart.belongsToMany(Product, { through: CartItem });
-Product.belongsToMany(Cart, { through: CartItem });
+Cart.belongsToMany(Product, {
+  through: CartItem
+});
+Product.belongsToMany(Cart, {
+  through: CartItem
+});
+
+// 使用路由資料夾
+app.use(authRoutes);
+app.use(shopRoutes);
+app.use(errorRoutes);
 
 // app.listen(3001, () => {
 //   console.log('running server on port 3001');
@@ -81,13 +105,12 @@ Product.belongsToMany(Cart, { through: CartItem });
 
 // 使用Sequelize連結 DB
 database
-  .sync()
-  // .sync({force: true}) // 每次寫入資料前都先清空資料庫(避免重複輸入)
+  // .sync()
+  .sync({
+    force: true
+  }) // 和 db 連線時，強制重設 db
   .then((result) => {
-    // User.create({
-    //   displayName: 'Admin', email: 'admin@skoob.com', password: '11111111'
-    // });
-    //Product.bulkCreate(products);
+    Product.bulkCreate(products);
     app.listen(port, () => {
       console.log(`Web Server is running on port ${port}`);
     });

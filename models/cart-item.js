@@ -4,7 +4,7 @@
 
  const database = require('../utils/database');
  
- ////////////////////////////////////////////////////////////
+ //==========================================================
  
  const CartItem = database.define('cartItem', {
    id: {
@@ -21,4 +21,3 @@
  });
  
  module.exports = CartItem;
- 
